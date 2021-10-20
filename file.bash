@@ -80,8 +80,9 @@ cmd_edit() {
 		echo "\$EDITOR not set, don't know how to open file."
 		exit 1
 	else
-		local tmpfile=$(mktemp)
 		chmod 0600 $tmpfile
+		local tmpfile
+		tmpfile=$(mktemp)
 
 		if [[ -f $passfile ]]; then
 			cmd_retrieve $path >$tmpfile
