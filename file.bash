@@ -81,7 +81,6 @@ cmd_edit() {
 		exit 1
 	else
 		local tmpfile=$(mktemp)
-		local newfile=0
 		chmod 0600 $tmpfile
 
 		if [[ -f $passfile ]]; then
