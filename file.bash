@@ -6,7 +6,7 @@ print_usage() {
 	echo "  store|add|attach: add new file to password store"
 	echo "  retrieve|show|cat: retrieve file from password store and print it to stdout"
 	echo "  edit|vi: edit a file (warning: unencrypted file will be opened with \$EDITOR)"
-	exit 0
+	exit
 }
 
 cmd_store() {
@@ -33,7 +33,7 @@ cmd_store() {
 	if [[ -f $passfile ]] && [[ "$PASS_FILE_FORCE_OVERWRITE" != "true" ]]; then
 		read -r -p "A file with this name already exists in the store. Do you want to overwrite it? [y/N] " response
 		if [[ $response != [yY] ]]; then
-			exit 0
+			exit
 		fi
 	fi
 
