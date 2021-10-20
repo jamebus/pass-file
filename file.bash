@@ -19,7 +19,7 @@ cmd_store() {
 
 	local passfile="$PREFIX/$path.gpg"
 
-	cd $OLDPWD # fix for relative paths
+	cd $OLDPWD || return 1 # fix for relative paths
 
 	check_sneaky_paths "$1"
 	set_git "$passfile"
