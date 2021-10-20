@@ -80,7 +80,6 @@ cmd_edit() {
 		echo "\$EDITOR not set, don't know how to open file."
 		exit 1
 	else
-		chmod 0600 $tmpfile
 		local tmpfile
 		tmpfile=$(mktemp)
 
