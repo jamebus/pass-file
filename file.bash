@@ -1,4 +1,5 @@
 # shellcheck shell=bash
+# shellcheck enable=quote-safe-variables
 
 print_usage() {
 	echo "Usage: $PROGRAM file action pass-name [path]"
@@ -19,7 +20,7 @@ cmd_store() {
 
 	local passfile="$PREFIX/$path.gpg"
 
-	cd $OLDPWD || return 1 # fix for relative paths
+	cd "$OLDPWD" || return 1 # fix for relative paths
 
 	check_sneaky_paths "$1"
 	set_git "$passfile"
@@ -41,9 +42,9 @@ cmd_store() {
 
 	set_gpg_recipients "$(dirname "$path")"
 
-	base64 $file | $GPG -e "${GPG_RECIPIENT_ARGS[@]}" -o "$passfile" "${GPG_OPTS[@]}"
+	base64 "$file" | $GPG -e "${GPG_RECIPIENT_ARGS[@]}" -o "$passfile" "${GPG_OPTS[@]}"
 
-	git_add_file $passfile "Store arbitary file for $path to store."
+	git_add_file "$passfile" "Store arbitary file for $path to store."
 }
 
 cmd_retrieve() {
@@ -84,9 +85,9 @@ cmd_edit() {
 		tmpfile=$(mktemp)
 
 		if [[ -f $passfile ]]; then
-			cmd_retrieve $path >$tmpfile
+			cmd_retrieve "$path" > "$tmpfile"
 			if [[ $? -ne 0 ]]; then
-				rm $tmpfile
+				rm "$tmpfile"
 				exit 1
 			fi
 		else
@@ -94,20 +95,20 @@ cmd_edit() {
 			sleep 3
 		fi
 
-		$EDITOR $tmpfile
+		$EDITOR "$tmpfile"
 		if [[ $? -ne 0 ]]; then
-			rm $tmpfile
+			rm "$tmpfile"
 			exit 1
 		fi
 
-		PASS_FILE_FORCE_OVERWRITE='true' cmd_store $path $tmpfile
+		PASS_FILE_FORCE_OVERWRITE='true' cmd_store "$path" "$tmpfile"
 		if [[ $? -ne 0 ]]; then
 			echo 'Could not save file, please check yourself.'
 			echo "Tempfile: ${tmpfile}"
 			exit 1
 		fi
 
-		rm $tmpfile
+		rm "$tmpfile"
 	fi
 }
 
