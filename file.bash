@@ -7,7 +7,7 @@ print_usage() {
 	echo '  store|add|attach: add new file to password store'
 	echo '  retrieve|show|cat: retrieve file from password store and print it to stdout'
 	# shellcheck disable=SC2016
-	echo '  edit|vi: edit a file (warning: unencrypted file will be opened with $EDITOR)'
+	echo '  edit|vi: edit a file (WARNING: unencrypted file will be opened with $EDITOR)'
 	exit
 }
 
