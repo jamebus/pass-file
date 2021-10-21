@@ -85,7 +85,7 @@ cmd_edit() {
 		tmpfile=$(mktemp)
 
 		if [[ -f $passfile ]]; then
-			if cmd_retrieve "$path" > "$tmpfile"; then
+			if ! cmd_retrieve "$path" > "$tmpfile"; then
 				rm "$tmpfile"
 				exit 1
 			fi
@@ -94,13 +94,13 @@ cmd_edit() {
 			sleep 3
 		fi
 
-		if $EDITOR "$tmpfile"; then
+		if ! $EDITOR "$tmpfile"; then
 			rm "$tmpfile"
 			exit 1
 		fi
 
-		if PASS_FILE_FORCE_OVERWRITE='true' \
-		     cmd_store "$path" "$tmpfile"; then
+		if ! PASS_FILE_FORCE_OVERWRITE='true' \
+		       cmd_store "$path" "$tmpfile"; then
 			die "Could not save file. Tempfile: $tmpfile"
 		fi
 
