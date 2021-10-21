@@ -79,8 +79,7 @@ cmd_edit() {
 	local passfile="${PREFIX}/${path}.gpg"
 
 	if [[ -z $EDITOR ]]; then
-		echo "\$EDITOR not set, don't know how to open file."
-		exit 1
+		die "\$EDITOR not set, don't know how to open file."
 	else
 		local tmpfile
 		tmpfile=$(mktemp)
@@ -102,9 +101,7 @@ cmd_edit() {
 
 		if PASS_FILE_FORCE_OVERWRITE='true' \
 		     cmd_store "$path" "$tmpfile"; then
-			echo 'Could not save file, please check yourself.'
-			echo "Tempfile: $tmpfile"
-			exit 1
+			die "Could not save file. Tempfile: $tmpfile"
 		fi
 
 		rm "$tmpfile"
