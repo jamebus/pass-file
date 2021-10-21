@@ -18,7 +18,7 @@ cmd_store() {
 		path="${path}.b64"
 	fi
 
-	local passfile="$PREFIX/$path.gpg"
+	local passfile="${PREFIX}/${path}.gpg"
 
 	cd "$OLDPWD" || return 1 # fix for relative paths
 
@@ -54,7 +54,7 @@ cmd_retrieve() {
 		path="${path}.b64"
 	fi
 
-	local passfile="$PREFIX/$path.gpg"
+	local passfile="${PREFIX}/${path}.gpg"
 
 	if [[ -z $path ]]; then
 		print_usage
@@ -75,7 +75,7 @@ cmd_edit() {
 		path="${path}.b64"
 	fi
 
-	local passfile="$PREFIX/$path.gpg"
+	local passfile="${PREFIX}/${path}.gpg"
 
 	if [[ -z $EDITOR ]]; then
 		echo "\$EDITOR not set, don't know how to open file."
@@ -104,7 +104,7 @@ cmd_edit() {
 		PASS_FILE_FORCE_OVERWRITE='true' cmd_store "$path" "$tmpfile"
 		if [[ $? -ne 0 ]]; then
 			echo 'Could not save file, please check yourself.'
-			echo "Tempfile: ${tmpfile}"
+			echo "Tempfile: $tmpfile"
 			exit 1
 		fi
 
