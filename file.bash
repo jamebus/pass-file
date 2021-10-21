@@ -2,10 +2,10 @@
 
 print_usage() {
 	echo "Usage: $PROGRAM file action pass-name [path]"
-	echo "Actions:"
-	echo "  store|add|attach: add new file to password store"
-	echo "  retrieve|show|cat: retrieve file from password store and print it to stdout"
-	echo "  edit|vi: edit a file (warning: unencrypted file will be opened with \$EDITOR)"
+	echo 'Actions:'
+	echo '  store|add|attach: add new file to password store'
+	echo '  retrieve|show|cat: retrieve file from password store and print it to stdout'
+	echo '  edit|vi: edit a file (warning: unencrypted file will be opened with $EDITOR)'
 	exit
 }
 
@@ -13,7 +13,7 @@ cmd_store() {
 	local path="$1"
 	local file="$2"
 
-	if [[ ${path: -4} != ".b64" ]]; then
+	if [[ ${path: -4} != '.b64' ]]; then
 		path="${path}.b64"
 	fi
 
@@ -30,8 +30,8 @@ cmd_store() {
 		die "Error: $file does not exist."
 	fi
 
-	if [[ -f $passfile ]] && [[ "$PASS_FILE_FORCE_OVERWRITE" != "true" ]]; then
-		read -r -p "A file with this name already exists in the store. Do you want to overwrite it? [y/N] " response
+	if [[ -f $passfile ]] && [[ "$PASS_FILE_FORCE_OVERWRITE" != 'true' ]]; then
+		read -r -p 'A file with this name already exists in the store. Do you want to overwrite it? [y/N] ' response
 		if [[ $response != [yY] ]]; then
 			exit
 		fi
@@ -49,7 +49,7 @@ cmd_store() {
 cmd_retrieve() {
 	local path="$1"
 
-	if [[ ${path: -4} != ".b64" ]]; then
+	if [[ ${path: -4} != '.b64' ]]; then
 		path="${path}.b64"
 	fi
 
@@ -70,7 +70,7 @@ cmd_edit() {
 		print_usage
 	fi
 
-	if [[ ${path: -4} != ".b64" ]]; then
+	if [[ ${path: -4} != '.b64' ]]; then
 		path="${path}.b64"
 	fi
 
@@ -90,7 +90,7 @@ cmd_edit() {
 				exit 1
 			fi
 		else
-			echo "File does not exist, creating new file..."
+			echo 'File does not exist, creating new file...'
 			sleep 3
 		fi
 
@@ -100,9 +100,9 @@ cmd_edit() {
 			exit 1
 		fi
 
-		PASS_FILE_FORCE_OVERWRITE="true" cmd_store $path $tmpfile
+		PASS_FILE_FORCE_OVERWRITE='true' cmd_store $path $tmpfile
 		if [[ $? -ne 0 ]]; then
-			echo "Could not save file, please check yourself."
+			echo 'Could not save file, please check yourself.'
 			echo "Tempfile: ${tmpfile}"
 			exit 1
 		fi
