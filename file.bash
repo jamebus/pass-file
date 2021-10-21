@@ -32,7 +32,8 @@ cmd_store() {
 		die "Error: $file does not exist."
 	fi
 
-	if [[ -f $passfile ]] && [[ "$PASS_FILE_FORCE_OVERWRITE" != 'true' ]]; then
+	if [[ -f $passfile ]] && \
+	   [[ "$PASS_FILE_FORCE_OVERWRITE" != 'true' ]]; then
 		read -r -p 'A file with this name already exists in the store. Do you want to overwrite it? [y/N] ' response
 		if [[ $response != [yY] ]]; then
 			exit
@@ -43,7 +44,8 @@ cmd_store() {
 
 	set_gpg_recipients "$(dirname "$path")"
 
-	base64 "$file" | $GPG -e "${GPG_RECIPIENT_ARGS[@]}" -o "$passfile" "${GPG_OPTS[@]}"
+	base64 "$file" | $GPG -e "${GPG_RECIPIENT_ARGS[@]}" \
+	                      -o "$passfile" "${GPG_OPTS[@]}"
 
 	git_add_file "$passfile" "Store arbitary file for $path to store."
 }
@@ -61,7 +63,9 @@ cmd_retrieve() {
 		print_usage
 	else
 		check_sneaky_paths "$path"
-		[[ -e $passfile ]] || die "Error: $path is not in the password store."
+		if [[ ! -e $passfile ]]; then
+			die "Error: $path is not in the password store."
+		fi
 		$GPG -d "${GPG_OPTS[@]}" "$passfile" | base64 -d || exit $?
 	fi
 }
