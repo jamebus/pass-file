@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+# shellcheck shell=bash
 
 print_usage() {
 	echo "Usage: $PROGRAM file action pass-name [path]"
