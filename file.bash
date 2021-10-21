@@ -61,6 +61,7 @@ cmd_retrieve() {
 		print_usage
 	else
 		check_sneaky_paths "$path"
+		[[ -e $passfile ]] || die "Error: $path is not in the password store."
 		$GPG -d "${GPG_OPTS[@]}" "$passfile" | base64 -d || exit $?
 	fi
 }
