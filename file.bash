@@ -50,6 +50,16 @@ cmd_store() {
 	git_add_file "$passfile" "Store arbitary file for $path to store."
 }
 
+check_store_path() {
+	local path="$1"
+	local passfile="${PREFIX}/${path}.gpg"
+
+	check_sneaky_paths "$path"
+	if [[ ! -e $passfile ]]; then
+		die "Error: $path is not in the password store."
+	fi
+}
+
 cmd_retrieve() {
 	local path="$1"
 
