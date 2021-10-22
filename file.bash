@@ -72,10 +72,7 @@ cmd_retrieve() {
 	if [[ -z $path ]]; then
 		print_usage
 	else
-		check_sneaky_paths "$path"
-		if [[ ! -e $passfile ]]; then
-			die "Error: $path is not in the password store."
-		fi
+		check_store_path "$path"
 		$GPG -d "${GPG_OPTS[@]}" "$passfile" | base64 -d || exit $?
 	fi
 }
