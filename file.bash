@@ -6,6 +6,8 @@ print_usage() {
 	echo 'Actions:'
 	echo '  store|add|attach: add new file to password store'
 	echo '  retrieve|show|cat: retrieve file from password store and print it to stdout'
+	echo '  imgcat|showimg|showimage: retrieve file from password store and display'
+	echo '                            using imgcat(1)'
 	# shellcheck disable=SC2016
 	echo '  edit|vi: edit a file (WARNING: unencrypted file will be opened with $EDITOR)'
 	exit
@@ -77,6 +79,11 @@ cmd_retrieve() {
 	fi
 }
 
+cmd_imgcat() {
+	check_store_path "$1"
+	cmd_retrieve "$1" | imgcat || exit $?
+}
+
 cmd_edit() {
 	local path="$1"
 
@@ -126,6 +133,9 @@ store | add | attach)
 	;;
 retrieve | show | cat)
 	shift && cmd_retrieve "$@"
+	;;
+imgcat | showimg | showimage)
+	shift && cmd_imgcat "$@"
 	;;
 edit | vi)
 	shift && cmd_edit "$@"
