@@ -46,8 +46,8 @@ cmd_store() {
 
 	set_gpg_recipients "$(dirname "$path")"
 
-	base64 "$file" | $GPG -e "${GPG_RECIPIENT_ARGS[@]}" \
-	                      -o "$passfile" "${GPG_OPTS[@]}"
+	base64 < "$file" | $GPG -e "${GPG_RECIPIENT_ARGS[@]}" \
+	                        -o "$passfile" "${GPG_OPTS[@]}"
 
 	git_add_file "$passfile" "Store arbitary file for $path to store."
 }
