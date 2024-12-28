@@ -7,7 +7,7 @@ print_usage() {
 	echo '  store|add|attach: add new file to password store'
 	echo '  retrieve|show|cat: retrieve file from password store and print it to stdout'
 	echo '  imgcat|showimg|showimage: retrieve file from password store and display'
-	echo '                            using imgcat(1)'
+	echo '                            using viu(1) or imgcat(1)'
 	# shellcheck disable=SC2016
 	echo '  edit|vi: edit a file (WARNING: unencrypted file will be opened with $EDITOR)'
 	exit
@@ -79,9 +79,16 @@ cmd_retrieve() {
 	fi
 }
 
-cmd_imgcat() {
+cmd_showimage() {
 	check_store_path "$1"
-	cmd_retrieve "$1" | imgcat || exit $?
+
+	if command -v viu >/dev/null; then
+		cmd_retrieve "$1" | viu - || exit $?
+	elif command -v imgcat >/dev/null; then
+		cmd_retrieve "$1" | imgcat || exit $?
+	else
+		die 'viu or imgcat not found'
+	fi
 }
 
 cmd_edit() {
@@ -135,7 +142,7 @@ retrieve | show | cat)
 	shift && cmd_retrieve "$@"
 	;;
 imgcat | showimg | showimage)
-	shift && cmd_imgcat "$@"
+	shift && cmd_showimage "$@"
 	;;
 edit | vi)
 	shift && cmd_edit "$@"
